@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calidad del Aire en Tiempo Real</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Firebase SDK - Importa las librerías necesarias -->
+
+    <!-- Firebase SDK - Compat (para usar firebase.initializeApp y firebase.database) -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
@@ -13,6 +14,7 @@
     <header>
         <h1>Monitoreo de Calidad del Aire y Sensores</h1>
     </header>
+
     <main>
         <section class="data-card">
             <h2>Datos del Sensor</h2>
@@ -26,17 +28,25 @@
                 <p>Lux: <span id="luxValue">Cargando...</span> lux</p>
                 <p>Luz Blanca: <span id="whiteLightValue">Cargando...</span></p>
             </div>
-            <p class="timestamp">Última actualización: <span id="lastUpdated"></span></p>
+
+            <p class="timestamp">
+                Última actualización: <span id="lastUpdated"></span>
+            </p>
         </section>
+
         <section class="info">
-            <p>Estos datos provienen de tu Realtime Database: <code>esp32-calidad-del-aire-default-rtdb</code></p>
+            <p>Estos datos provienen de tu Realtime Database:
+                <code>esp32-calidad-del-aire-default-rtdb</code>
+            </p>
             <p>Asegúrate de que tus reglas de seguridad permitan la lectura pública para este ejemplo.</p>
         </section>
     </main>
+
     <footer>
         <p>&copy; 2023 - Monitoreo ESP32 Calidad del Aire</p>
     </footer>
 
+    <!-- Tu lógica de Firebase y lectura de datos -->
     <script src="script.js"></script>
 </body>
 </html>
