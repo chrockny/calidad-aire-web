@@ -326,7 +326,6 @@ main {
 
 /* badge mini en títulos de gráficos */
 .chart-container h3::after {
-    content: "实时"; /* "tiempo real" en chino, puro facha tech */
     font-size: 0.6rem;
     margin-left: 8px;
     padding: 1px 7px;

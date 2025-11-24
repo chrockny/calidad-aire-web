@@ -1,6 +1,8 @@
 console.log("script.js cargado");
 
-// Configuración Firebase (tomada de tu consola)
+// ---------------------------
+// CONFIGURACIÓN FIREBASE
+// ---------------------------
 const firebaseConfig = {
   apiKey: "AIzaSyCThv9QJYl45ANIip2xEZDVj9_u6-wD7rk",
   authDomain: "esp32-calidad-del-aire.firebaseapp.com",
@@ -12,36 +14,46 @@ const firebaseConfig = {
   measurementId: "G-0JX7KMEEC4"
 };
 
-// Inicializa Firebase (SDK compat, el que cargas en el HTML)
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
-// Captura de elementos HTML (valores numéricos)
-const co2Mhz19Element    = document.getElementById("co2Mhz19Value");
-const co2Mq135Element    = document.getElementById("co2Mq135Value");
-const pm1Element         = document.getElementById("pm1_0Value");
-const pm25Element        = document.getElementById("pm2_5Value");
-const pm10Element        = document.getElementById("pm10Value");
-const tempElement        = document.getElementById("tempMhz19Value");
-const luxElement         = document.getElementById("luxValue");
-const whiteLightElement  = document.getElementById("whiteLightValue");
+// ---------------------------
+//    CAPTURA DE ELEMENTOS
+// ---------------------------
+const co2Mhz19Element = document.getElementById("co2Mhz19Value");
+const co2Mq135Element = document.getElementById("co2Mq135Value");
+const pm1Element = document.getElementById("pm1_0Value");
+const pm25Element = document.getElementById("pm2_5Value");
+const pm10Element = document.getElementById("pm10Value");
+const tempElement = document.getElementById("tempMhz19Value");
+const luxElement = document.getElementById("luxValue");
+const whiteLightElement = document.getElementById("whiteLightValue");
 const lastUpdatedElement = document.getElementById("lastUpdated");
 
-// ---------- CONFIGURACIÓN DE GRÁFICAS EN TIEMPO REAL ----------
-
-// Máximo de puntos a mostrar en las gráficas
+// ---------------------------
+//    GRÁFICAS EN TIEMPO REAL
+// ---------------------------
 const MAX_POINTS = 20;
 
-// Arrays compartidos de etiquetas (tiempo) y datos
 const timeLabels = [];
-const co2Series  = [];
+
+const co2mhzSeries = [];
+const co2mqSeries = [];
+
+const pm1Series = [];
 const pm25Series = [];
+const pm10Series = [];
 
-// Contextos de los canvas
-const co2Ctx  = document.getElementById("co2Chart").getContext("2d");
-const pm25Ctx = document.getElementById("pm25Chart").getContext("2d");
+const tempSeries = [];
+const luxSeries = [];
+const whiteLightSeries = [];
 
-// Gráfica de CO2 (MHZ19)
+// === Obtener los canvas del HTML ===
+const co2Ctx = document.getElementById("co2Chart").getContext("2d");
+const pmCtx = document.getElementById("pmChart").getContext("2d");
+const envCtx = document.getElementById("envChart").getContext("2d");
+
+// === GRÁFICA DE CO₂ ===
 const co2Chart = new Chart(co2Ctx, {
   type: "line",
   data: {
@@ -49,138 +61,158 @@ const co2Chart = new Chart(co2Ctx, {
     datasets: [
       {
         label: "CO₂ MHZ19 (ppm)",
-        data: co2Series,
-        borderColor: "rgba(52, 152, 219, 1)",
-        backgroundColor: "rgba(52, 152, 219, 0.15)",
-        borderWidth: 2,
-        tension: 0.25,
-        pointRadius: 2
+        data: co2mhzSeries,
+        borderColor: "#00e5ff",
+        backgroundColor: "rgba(0,229,255,0.2)",
+        pointRadius: 2,
+        tension: 0.25
+      },
+      {
+        label: "CO₂ MQ135 (ppm)",
+        data: co2mqSeries,
+        borderColor: "#29ff94",
+        backgroundColor: "rgba(41,255,148,0.2)",
+        pointRadius: 2,
+        tension: 0.25
       }
     ]
   },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      x: {
-        title: { display: true, text: "Tiempo" }
-      },
-      y: {
-        title: { display: true, text: "ppm" },
-        beginAtZero: true
-      }
-    }
-  }
+  options: { responsive: true, maintainAspectRatio: false }
 });
 
-// Gráfica de PM2.5
-const pm25Chart = new Chart(pm25Ctx, {
+// === GRÁFICA PM (1.0 / 2.5 / 10) ===
+const pmChart = new Chart(pmCtx, {
   type: "line",
   data: {
     labels: timeLabels,
     datasets: [
       {
-        label: "PM2.5 (µg/m³)",
+        label: "PM1.0",
+        data: pm1Series,
+        borderColor: "#ff6bcb",
+        backgroundColor: "rgba(255,107,203,0.25)",
+        pointRadius: 2,
+        tension: 0.25
+      },
+      {
+        label: "PM2.5",
         data: pm25Series,
-        borderColor: "rgba(231, 76, 60, 1)",
-        backgroundColor: "rgba(231, 76, 60, 0.15)",
-        borderWidth: 2,
+        borderColor: "#ffd166",
+        backgroundColor: "rgba(255,209,102,0.25)",
+        pointRadius: 2,
+        tension: 0.25
+      },
+      {
+        label: "PM10",
+        data: pm10Series,
+        borderColor: "#8ab4f8",
+        backgroundColor: "rgba(138,180,248,0.25)",
+        pointRadius: 2,
+        tension: 0.25
+      }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false }
+});
+
+// === GRÁFICA DE TEMPERATURA / LUX / LUZ BLANCA ===
+const envChart = new Chart(envCtx, {
+  type: "line",
+  data: {
+    labels: timeLabels,
+    datasets: [
+      {
+        label: "Temp (°C)",
+        data: tempSeries,
+        borderColor: "#00e5ff",
+        backgroundColor: "rgba(0,229,255,0.2)",
+        tension: 0.25,
+        pointRadius: 2
+      },
+      {
+        label: "Lux",
+        data: luxSeries,
+        borderColor: "#ffd166",
+        backgroundColor: "rgba(255,209,102,0.25)",
+        tension: 0.25,
+        pointRadius: 2
+      },
+      {
+        label: "Luz Blanca",
+        data: whiteLightSeries,
+        borderColor: "#29ff94",
+        backgroundColor: "rgba(41,255,148,0.25)",
         tension: 0.25,
         pointRadius: 2
       }
     ]
   },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      x: {
-        title: { display: true, text: "Tiempo" }
-      },
-      y: {
-        title: { display: true, text: "µg/m³" },
-        beginAtZero: true
-      }
-    }
-  }
+  options: { responsive: true, maintainAspectRatio: false }
 });
 
-// Función auxiliar para añadir un nuevo punto a las series
-function addRealtimePoint(co2Value, pm25Value) {
-  const nowLabel = new Date().toLocaleTimeString();
+// ---------------------------------------
+// FUNCIÓN PARA AÑADIR PUNTOS A LAS SERIES
+// ---------------------------------------
+function addPoint(data) {
+  const label = new Date().toLocaleTimeString();
+  timeLabels.push(label);
 
-  // Añadimos nueva etiqueta de tiempo
-  timeLabels.push(nowLabel);
+  co2mhzSeries.push(data.co2_mhz19 ?? null);
+  co2mqSeries.push(data.co2_mq135 ?? null);
 
-  // Añadimos datos (si vienen definidos)
-  co2Series.push(co2Value != null ? co2Value : null);
-  pm25Series.push(pm25Value != null ? pm25Value : null);
+  pm1Series.push(data.pm1_0 ?? null);
+  pm25Series.push(data.pm2_5 ?? null);
+  pm10Series.push(data.pm10 ?? null);
 
-  // Si nos pasamos del máximo, eliminamos el más antiguo
+  tempSeries.push(data.temp_mhz19 ?? null);
+  luxSeries.push(data.lux ?? null);
+  whiteLightSeries.push(data.white_light ?? null);
+
   if (timeLabels.length > MAX_POINTS) {
     timeLabels.shift();
-    co2Series.shift();
+    co2mhzSeries.shift();
+    co2mqSeries.shift();
+    pm1Series.shift();
     pm25Series.shift();
+    pm10Series.shift();
+    tempSeries.shift();
+    luxSeries.shift();
+    whiteLightSeries.shift();
   }
 
-  // Actualizamos ambas gráficas
   co2Chart.update();
-  pm25Chart.update();
+  pmChart.update();
+  envChart.update();
 }
 
-// ---------- LECTURA DE DATOS DESDE REALTIME DATABASE ----------
+// ---------------------------
+// LECTURA REALTIME DATABASE
+// ---------------------------
+database.ref("UsersData").once("value", (snap) => {
+  const users = snap.val();
+  if (!users) return;
 
-// Primero leemos UsersData para obtener un ID válido
-const usersDataRef = database.ref("UsersData");
+  const firstId = Object.keys(users)[0];
+  const datosRef = database.ref(`UsersData/${firstId}/Datos`);
 
-usersDataRef.once(
-  "value",
-  (snap) => {
-    const usersData = snap.val();
-    console.log("UsersData:", usersData);
+  datosRef.on("value", (snapshot) => {
+    const data = snapshot.val();
 
-    if (!usersData) {
-      console.log("No hay datos en UsersData");
-      return;
-    }
+    if (!data) return;
 
-    // Tomamos el primer ID disponible
-    const userIds = Object.keys(usersData);
-    const firstId = userIds[0];
-    console.log("Usando userId:", firstId);
+    // Actualizar valores en pantalla
+    co2Mhz19Element.textContent = data.co2_mhz19;
+    co2Mq135Element.textContent = data.co2_mq135;
+    pm1Element.textContent = data.pm1_0;
+    pm25Element.textContent = data.pm2_5;
+    pm10Element.textContent = data.pm10;
+    tempElement.textContent = data.temp_mhz19;
+    luxElement.textContent = data.lux;
+    whiteLightElement.textContent = data.white_light;
 
-    // Referencia al nodo Datos de ese ID
-    const datosRef = database.ref(`UsersData/${firstId}/Datos`);
+    lastUpdatedElement.textContent = new Date().toLocaleString();
 
-    // Listener en tiempo real
-    datosRef.on("value", (snapshot) => {
-      const data = snapshot.val();
-      console.log("Datos recibidos:", data);
-
-      if (!data) {
-        console.log("Nodo Datos vacío");
-        return;
-      }
-
-      // Actualizamos los spans de texto
-      if (data.co2_mhz19  !== undefined) co2Mhz19Element.textContent   = data.co2_mhz19;
-      if (data.co2_mq135  !== undefined) co2Mq135Element.textContent   = data.co2_mq135;
-      if (data.pm1_0      !== undefined) pm1Element.textContent        = data.pm1_0;
-      if (data.pm2_5      !== undefined) pm25Element.textContent       = data.pm2_5;
-      if (data.pm10       !== undefined) pm10Element.textContent       = data.pm10;
-      if (data.temp_mhz19 !== undefined) tempElement.textContent       = data.temp_mhz19;
-      if (data.lux        !== undefined) luxElement.textContent        = data.lux;
-      if (data.white_light !== undefined) whiteLightElement.textContent = data.white_light;
-
-      lastUpdatedElement.textContent = new Date().toLocaleString();
-
-      // Añadimos el nuevo punto a las gráficas
-      const co2Value  = data.co2_mhz19 ?? null;
-      const pm25Value = data.pm2_5 ?? null;
-      addRealtimePoint(co2Value, pm25Value);
-    });
-  },
-  (error) => {
-    console.error("Error leyendo UsersData:", error);
-  }
-);
+    // Añadir al gráfico
+    addPoint(data);
+  });
+});
