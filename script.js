@@ -1,52 +1,55 @@
-// Tu configuración de Firebase
-import { initializeApp } from "firebase/app";
-// ¡IMPORTANTE! Reemplaza los valores con los de tu proyecto.
-// Puedes encontrarlos en la consola de Firebase > Configuración del proyecto > Tus apps > Web
-const firebaseConfig = {
-    apiKey: "AIzaSyCThv9QJYl45ANIip2xEZDVj9_u6-wD7rk",
-    authDomain: "esp32-calidad-del-aire.firebaseapp.com",
-    databaseURL: "https://esp32-calidad-del-aire-default-rtdb.firebaseio.com",
-    projectId: "esp32-calidad-del-aire",
-    storageBucket: "esp32-calidad-del-aire.firebasestorage.app",
-    messagingSenderId: "655592670447",
-    appId: "1:655592670447:web:4f398660db64d8e970871a",
-    measurementId: "G-0JX7KMEEC4"
-  };
-  
-  // Inicializa Firebase
-  firebase.initializeApp(firebaseConfig);
-  
-  // Obtén una referencia a la Realtime Database
-  const database = firebase.database();
-  // RUTA EXACTA PARA EL VALOR pm2_5
-// Usa tu ID único (FKXFzztAxHhBSzN0ItQX06fDAku1) y el campo 'pm2_5'
-const airQualityRef = database.ref('UsersData/FKXFzztAxHhBSzN0ItQX06fDAku1/Datos/pm2_5');
+// Inicializa Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Referencia a la Realtime Database
+const database = firebase.database();
+
+// RUTA EXACTA A 'Datos' (no solo a pm2_5)
+const datosRef = database.ref('UsersData/FKXFzztAxHHBsZN0ItQX06fDAku1/Datos');
 
 // Elementos HTML donde mostraremos los datos
-const airQualityValueElement = document.getElementById('airQualityValue');
+const pm25Element       = document.getElementById('pm2_5Value');
+const co2Mhz19Element   = document.getElementById('co2Mhz19Value');
+const co2Mq135Element   = document.getElementById('co2Mq135Value');
+const pm1Element        = document.getElementById('pm1_0Value');
+const pm10Element       = document.getElementById('pm10Value');
+const tempElement       = document.getElementById('tempMhz19Value');
+const luxElement        = document.getElementById('luxValue');
+const whiteLightElement = document.getElementById('whiteLightValue');
+
 const lastUpdatedElement = document.getElementById('lastUpdated');
 
-// Escucha los cambios en los datos en tiempo real
-airQualityRef.on('value', (snapshot) => {
-    const data = snapshot.val(); // Obtiene el valor de 'pm2_5'
-    if (data !== null) {
-        airQualityValueElement.textContent = data; // Actualiza el texto con el nuevo valor de pm2_5
-        const now = new Date();
-        lastUpdatedElement.textContent = now.toLocaleString(); // Muestra la hora de la última actualización
-        console.log("Nuevo valor de PM2.5:", data);
-    } else {
-        airQualityValueElement.textContent = 'No hay datos disponibles para PM2.5';
-        lastUpdatedElement.textContent = '';
-        console.log("No hay datos en la ruta UsersData/FKXFzztAxHhBSzN0ItQX06fDAku1/Datos/pm2_5");
-    }
-}, (error) => {
-    console.error("Error al leer datos:", error);
-    airQualityValueElement.textContent = 'Error al cargar datos';
-    lastUpdatedElement.textContent = '';
-});
+// Escucha cambios en todo el nodo Datos
+datosRef.on('value', (snapshot) => {
+  const data = snapshot.val();
 
-// ¡Recuerda!
-// Para mostrar otros valores como CO2, PM10, etc., necesitarías:
-// 1. Añadir más <span> u otros elementos en tu index.html con IDs únicos (ej. id="co2Value").
-// 2. Crear más referencias en script.js (ej. const co2Ref = database.ref('UsersData/FKXFzztAxHhBSzN0ItQX06fDAku1/Datos/co2_mhz19');).
-// 3. Crear más oyentes (co2Ref.on('value', ...)) para cada uno.
+  if (!data) {
+    pm25Element.textContent = 'Sin datos';
+    co2Mhz19Element.textContent = 'Sin datos';
+    co2Mq135Element.textContent = 'Sin datos';
+    pm1Element.textContent = 'Sin datos';
+    pm10Element.textContent = 'Sin datos';
+    tempElement.textContent = 'Sin datos';
+    luxElement.textContent = 'Sin datos';
+    whiteLightElement.textContent = 'Sin datos';
+    lastUpdatedElement.textContent = '';
+    console.log('No hay datos en Datos');
+    return;
+  }
+
+  // Asigna cada valor; usa el nombre EXACTO del campo en Firebase
+  if (data.pm2_5      !== undefined) pm25Element.textContent       = data.pm2_5;
+  if (data.co2_mhz19  !== undefined) co2Mhz19Element.textContent   = data.co2_mhz19;
+  if (data.co2_mq135  !== undefined) co2Mq135Element.textContent   = data.co2_mq135;
+  if (data.pm1_0      !== undefined) pm1Element.textContent        = data.pm1_0;
+  if (data.pm10       !== undefined) pm10Element.textContent       = data.pm10;
+  if (data.temp_mhz19 !== undefined) tempElement.textContent       = data.temp_mhz19;
+  if (data.lux        !== undefined) luxElement.textContent        = data.lux;
+  if (data.luzBlanca  !== undefined) whiteLightElement.textContent = data.luzBlanca;
+
+  const now = new Date();
+  lastUpdatedElement.textContent = now.toLocaleString();
+  console.log('Datos recibidos:', data);
+}, (error) => {
+  console.error('Error al leer la base de datos:', error);
+});
