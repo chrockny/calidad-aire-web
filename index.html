@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calidad del Aire en Tiempo Real</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Firebase SDK - Importa las librerías necesarias -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Monitoreo de Calidad del Aire</h1>
+    </header>
+    <main>
+        <section class="data-card">
+            <h2>Último Valor Registrado</h2>
+            <p>Valor de Calidad del Aire: <span id="airQualityValue">Cargando...</span></p>
+            <p class="timestamp">Última actualización: <span id="lastUpdated"></span></p>
+        </section>
+        <section class="info">
+            <p>Estos datos provienen de tu Realtime Database: <code>esp32-calidad-del-aire-default-rtdb</code></p>
+            <p>Asegúrate de que tus reglas de seguridad permitan la lectura pública para este ejemplo.</p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 - Monitoreo ESP32 Calidad del Aire</p>
+    </footer>
+
+    <!-- Tu script principal de JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
