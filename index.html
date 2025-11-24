@@ -9,6 +9,9 @@
     <!-- Firebase SDK - Compat (para usar firebase.initializeApp y firebase.database) -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+    <!-- Chart.js para las gráficas -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <header>
@@ -16,6 +19,7 @@
     </header>
 
     <main>
+        <!-- Tarjeta con los valores en tiempo real -->
         <section class="data-card">
             <h2>Datos del Sensor</h2>
             <div class="sensor-grid">
@@ -34,6 +38,29 @@
             </p>
         </section>
 
+        <!-- Tarjeta con las gráficas en tiempo real -->
+        <section class="charts-card">
+            <h2>Gráficas en Tiempo Real</h2>
+            <p class="charts-description">
+                Visualización en vivo de CO₂ (MHZ19) y PM2.5. Cada nuevo dato del ESP32 se añade como un punto en la serie.
+            </p>
+
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <h3>CO₂ (MHZ19)</h3>
+                    <canvas id="co2Chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>PM2.5</h3>
+                    <canvas id="pm25Chart"></canvas>
+                </div>
+            </div>
+
+            <p class="charts-note">
+                Mostrando los últimos 20 puntos de medición en tiempo real.
+            </p>
+        </section>
+
         <section class="info">
             <p>Estos datos provienen de tu Realtime Database:
                 <code>esp32-calidad-del-aire-default-rtdb</code>
@@ -46,7 +73,7 @@
         <p>&copy; 2023 - Monitoreo ESP32 Calidad del Aire</p>
     </footer>
 
-    <!-- Tu lógica de Firebase y lectura de datos -->
+    <!-- Tu lógica de Firebase, lectura de datos y gráficas -->
     <script src="script.js"></script>
 </body>
 </html>
