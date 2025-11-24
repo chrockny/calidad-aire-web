@@ -11,12 +11,21 @@
 </head>
 <body>
     <header>
-        <h1>Monitoreo de Calidad del Aire</h1>
+        <h1>Monitoreo de Calidad del Aire y Sensores</h1>
     </header>
     <main>
         <section class="data-card">
-            <h2>Último Valor Registrado</h2>
-            <p>Valor de Calidad del Aire: <span id="airQualityValue">Cargando...</span></p>
+            <h2>Datos del Sensor</h2>
+            <div class="sensor-grid">
+                <p>CO2 (MHZ19): <span id="co2Mhz19Value">Cargando...</span> ppm</p>
+                <p>CO2 (MQ135): <span id="co2Mq135Value">Cargando...</span> ppm</p>
+                <p>PM1.0: <span id="pm1_0Value">Cargando...</span> µg/m³</p>
+                <p>PM2.5: <span id="pm2_5Value">Cargando...</span> µg/m³</p>
+                <p>PM10: <span id="pm10Value">Cargando...</span> µg/m³</p>
+                <p>Temperatura (MHZ19): <span id="tempMhz19Value">Cargando...</span> °C</p>
+                <p>Lux: <span id="luxValue">Cargando...</span> lux</p>
+                <p>Luz Blanca: <span id="whiteLightValue">Cargando...</span></p>
+            </div>
             <p class="timestamp">Última actualización: <span id="lastUpdated"></span></p>
         </section>
         <section class="info">
@@ -28,7 +37,6 @@
         <p>&copy; 2023 - Monitoreo ESP32 Calidad del Aire</p>
     </footer>
 
-    <!-- Tu script principal de JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>

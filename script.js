@@ -18,36 +18,35 @@ const firebaseConfig = {
   
   // Obtén una referencia a la Realtime Database
   const database = firebase.database();
-  
-  // Obtén una referencia al nodo de datos que quieres monitorear
-  // Por ejemplo, asumimos que tienes un valor en "airQuality/currentValue"
-  // Si tus datos están en otra ruta, ¡ajusta esta línea!
-  const airQualityRef = database.ref('airQuality/currentValue'); // <--- ¡Ajusta esta ruta si es necesario!
-  
-  // Elementos HTML donde mostraremos los datos
-  const airQualityValueElement = document.getElementById('airQualityValue');
-  const lastUpdatedElement = document.getElementById('lastUpdated');
-  
-  // Escucha los cambios en los datos en tiempo real
-  airQualityRef.on('value', (snapshot) => {
-      const data = snapshot.val(); // Obtiene el valor de los datos
-      if (data !== null) {
-          airQualityValueElement.textContent = data; // Actualiza el texto con el nuevo valor
-          const now = new Date();
-          lastUpdatedElement.textContent = now.toLocaleString(); // Muestra la hora de la última actualización
-          console.log("Nuevo valor de calidad del aire:", data);
-      } else {
-          airQualityValueElement.textContent = 'No hay datos disponibles';
-          lastUpdatedElement.textContent = '';
-          console.log("No hay datos en la ruta airQuality/currentValue");
-      }
-  }, (error) => {
-      console.error("Error al leer datos:", error);
-      airQualityValueElement.textContent = 'Error al cargar datos';
-      lastUpdatedElement.textContent = '';
-  });
-  
-  // Para probar: Puedes ir a tu Realtime Database en la consola de Firebase
-  // y manualmente añadir un nodo 'airQuality/currentValue' con un número (ej. 75).
-  // Verás cómo la página se actualiza automáticamente.
-  
+  // RUTA EXACTA PARA EL VALOR pm2_5
+// Usa tu ID único (FKXFzztAxHhBSzN0ItQX06fDAku1) y el campo 'pm2_5'
+const airQualityRef = database.ref('UsersData/FKXFzztAxHhBSzN0ItQX06fDAku1/Datos/pm2_5');
+
+// Elementos HTML donde mostraremos los datos
+const airQualityValueElement = document.getElementById('airQualityValue');
+const lastUpdatedElement = document.getElementById('lastUpdated');
+
+// Escucha los cambios en los datos en tiempo real
+airQualityRef.on('value', (snapshot) => {
+    const data = snapshot.val(); // Obtiene el valor de 'pm2_5'
+    if (data !== null) {
+        airQualityValueElement.textContent = data; // Actualiza el texto con el nuevo valor de pm2_5
+        const now = new Date();
+        lastUpdatedElement.textContent = now.toLocaleString(); // Muestra la hora de la última actualización
+        console.log("Nuevo valor de PM2.5:", data);
+    } else {
+        airQualityValueElement.textContent = 'No hay datos disponibles para PM2.5';
+        lastUpdatedElement.textContent = '';
+        console.log("No hay datos en la ruta UsersData/FKXFzztAxHhBSzN0ItQX06fDAku1/Datos/pm2_5");
+    }
+}, (error) => {
+    console.error("Error al leer datos:", error);
+    airQualityValueElement.textContent = 'Error al cargar datos';
+    lastUpdatedElement.textContent = '';
+});
+
+// ¡Recuerda!
+// Para mostrar otros valores como CO2, PM10, etc., necesitarías:
+// 1. Añadir más <span> u otros elementos en tu index.html con IDs únicos (ej. id="co2Value").
+// 2. Crear más referencias en script.js (ej. const co2Ref = database.ref('UsersData/FKXFzztAxHhBSzN0ItQX06fDAku1/Datos/co2_mhz19');).
+// 3. Crear más oyentes (co2Ref.on('value', ...)) para cada uno.

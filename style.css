@@ -35,9 +35,26 @@ main {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.05);
     padding: 30px;
-    text-align: center;
+    text-align: center; /* Esto podría cambiarse a left para el grid */
     width: 100%;
     max-width: 400px;
+}
+
+/* Puedes añadir esto a tu style.css para organizar los nuevos datos */
+.sensor-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Una columna por defecto */
+    gap: 10px;
+    text-align: left; /* Alinea el texto a la izquierda dentro de la cuadrícula */
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* Para pantallas más grandes, puedes hacer dos columnas */
+@media (min-width: 600px) {
+    .sensor-grid {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
 .data-card h2 {
@@ -46,18 +63,22 @@ main {
     margin-bottom: 20px;
 }
 
-#airQualityValue {
+/* Este ID ya no lo usaremos para un solo valor */
+/* #airQualityValue {
     font-size: 3em;
     font-weight: bold;
     color: #3498db;
     display: block;
     margin-bottom: 10px;
-}
+} */
 
 .timestamp {
     font-size: 0.9em;
     color: #7f8c8d;
+    margin-top: 20px; /* Para separarlo de los valores */
+    display: block; /* Asegura que ocupe su propia línea */
 }
+
 
 .info {
     background-color: #ecf0f1;
