@@ -42,38 +42,33 @@
         <section class="charts-card">
             <h2>Gráficas en Tiempo Real</h2>
             <p class="charts-description">
-                Visualización en vivo de CO₂ (MHZ19) y PM2.5. Cada nuevo dato del ESP32 se añade como un punto en la serie.
+                Visualización en vivo de las principales variables de calidad de aire. Cada nuevo dato del ESP32 se añade como un punto en la serie.
             </p>
 
             <div class="charts-grid">
                 <div class="chart-container">
-                    <h3>CO₂ (MHZ19)</h3>
+                    <h3>CO₂ (MHZ19 vs MQ135)</h3>
                     <canvas id="co2Chart"></canvas>
                 </div>
+
                 <div class="chart-container">
-                    <h3>PM2.5</h3>
-                    <canvas id="pm25Chart"></canvas>
+                    <h3>Material Particulado (PM1.0, PM2.5, PM10)</h3>
+                    <canvas id="pmChart"></canvas>
+                </div>
+
+                <div class="chart-container">
+                    <h3>Temperatura, Lux y Luz Blanca</h3>
+                    <canvas id="envChart"></canvas>
                 </div>
             </div>
 
             <p class="charts-note">
-                Mostrando los últimos 20 puntos de medición en tiempo real.
+                Se muestran los últimos 20 puntos de medición en tiempo real.
             </p>
-        </section>
-
-        <section class="info">
-            <p>Estos datos provienen de tu Realtime Database:
-                <code>esp32-calidad-del-aire-default-rtdb</code>
-            </p>
-            <p>Asegúrate de que tus reglas de seguridad permitan la lectura pública para este ejemplo.</p>
         </section>
     </main>
 
-    <footer>
-        <p>&copy; 2023 - Monitoreo ESP32 Calidad del Aire</p>
-    </footer>
-
-    <!-- Tu lógica de Firebase, lectura de datos y gráficas -->
+    <!-- Lógica de Firebase, lectura de datos y gráficas -->
     <script src="script.js"></script>
 </body>
 </html>
