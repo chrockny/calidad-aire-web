@@ -1,14 +1,16 @@
 // Tu configuración de Firebase
+import { initializeApp } from "firebase/app";
 // ¡IMPORTANTE! Reemplaza los valores con los de tu proyecto.
 // Puedes encontrarlos en la consola de Firebase > Configuración del proyecto > Tus apps > Web
 const firebaseConfig = {
-    apiKey: "TU_API_KEY", // <--- ¡Reemplaza esto!
+    apiKey: "AIzaSyCThv9QJYl45ANIip2xEZDVj9_u6-wD7rk",
     authDomain: "esp32-calidad-del-aire.firebaseapp.com",
     databaseURL: "https://esp32-calidad-del-aire-default-rtdb.firebaseio.com",
     projectId: "esp32-calidad-del-aire",
-    storageBucket: "esp32-calidad-del-aire.appspot.com", // <--- ¡Reemplaza esto si es diferente!
-    messagingSenderId: "TU_MESSAGING_SENDER_ID", // <--- ¡Reemplaza esto!
-    appId: "TU_APP_ID" // <--- ¡Reemplaza esto!
+    storageBucket: "esp32-calidad-del-aire.firebasestorage.app",
+    messagingSenderId: "655592670447",
+    appId: "1:655592670447:web:4f398660db64d8e970871a",
+    measurementId: "G-0JX7KMEEC4"
   };
   
   // Inicializa Firebase
