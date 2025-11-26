@@ -38,34 +38,60 @@
             </p>
         </section>
 
-        <!-- Tarjeta con las gráficas en tiempo real -->
-        <section class="charts-card">
-            <h2>Gráficas en Tiempo Real</h2>
-            <p class="charts-description">
-                Visualización en vivo de las principales variables de calidad de aire. Cada nuevo dato del ESP32 se añade como un punto en la serie.
-            </p>
-
-            <div class="charts-grid">
-                <div class="chart-container">
-                    <h3>CO₂ (MHZ19 vs MQ135)</h3>
-                    <canvas id="co2Chart"></canvas>
+              <!-- Tarjeta con las gráficas en tiempo real -->
+              <section class="charts-card">
+                <h2>GRÁFICAS EN TIEMPO REAL</h2>
+                <p class="charts-description">
+                    Visualización en vivo de las principales variables de calidad de aire. Cada nuevo dato del ESP32 se añade como un punto en la serie.
+                </p>
+    
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <h3>CO₂ (MHZ19)</h3>
+                        <canvas id="co2MhzChart"></canvas>
+                    </div>
+    
+                    <div class="chart-container">
+                        <h3>CO₂ (MQ135)</h3>
+                        <canvas id="co2MqChart"></canvas>
+                    </div>
+    
+                    <div class="chart-container">
+                        <h3>PM1.0 (µg/m³)</h3>
+                        <canvas id="pm1Chart"></canvas>
+                    </div>
+    
+                    <div class="chart-container">
+                        <h3>PM2.5 (µg/m³)</h3>
+                        <canvas id="pm25Chart"></canvas>
+                    </div>
+    
+                    <div class="chart-container">
+                        <h3>PM10 (µg/m³)</h3>
+                        <canvas id="pm10Chart"></canvas>
+                    </div>
+    
+                    <div class="chart-container">
+                        <h3>Temperatura (°C)</h3>
+                        <canvas id="tempChart"></canvas>
+                    </div>
+    
+                    <div class="chart-container">
+                        <h3>Lux</h3>
+                        <canvas id="luxChart"></canvas>
+                    </div>
+    
+                    <div class="chart-container">
+                        <h3>Luz Blanca</h3>
+                        <canvas id="whiteLightChart"></canvas>
+                    </div>
                 </div>
-
-                <div class="chart-container">
-                    <h3>Material Particulado (PM1.0, PM2.5, PM10)</h3>
-                    <canvas id="pmChart"></canvas>
-                </div>
-
-                <div class="chart-container">
-                    <h3>Temperatura, Lux y Luz Blanca</h3>
-                    <canvas id="envChart"></canvas>
-                </div>
-            </div>
-
-            <p class="charts-note">
-                Se muestran los últimos 20 puntos de medición en tiempo real.
-            </p>
-        </section>
+    
+                <p class="charts-note">
+                    Se muestran los últimos 20 puntos de medición en tiempo real para cada variable.
+                </p>
+            </section>
+    
     </main>
 
     <!-- Lógica de Firebase, lectura de datos y gráficas -->
