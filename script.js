@@ -49,7 +49,7 @@ const whiteLightSeries = [];
 // ---------------------------
 //   CREACIÓN DE GRÁFICAS
 // ---------------------------
-function createSingleLineChart(ctx, label, data, yLabel) {
+function createSingleLineChart(ctx, label, data, yLabel, color) {
   return new Chart(ctx, {
     type: "line",
     data: {
@@ -58,11 +58,12 @@ function createSingleLineChart(ctx, label, data, yLabel) {
         {
           label: label,
           data: data,
-          borderColor: "#00e5ff",
-          backgroundColor: "rgba(0,229,255,0.2)",
+          borderColor: color,
+          backgroundColor: color + "33", // versión transparente
           borderWidth: 2,
           tension: 0.25,
-          pointRadius: 2
+          pointRadius: 2,
+          pointBackgroundColor: color
         }
       ]
     },
@@ -95,6 +96,7 @@ function createSingleLineChart(ctx, label, data, yLabel) {
   });
 }
 
+
 // Obtener contextos de cada canvas
 const co2MhzCtx   = document.getElementById("co2MhzChart").getContext("2d");
 const co2MqCtx    = document.getElementById("co2MqChart").getContext("2d");
@@ -106,14 +108,15 @@ const luxCtx      = document.getElementById("luxChart").getContext("2d");
 const whiteCtx    = document.getElementById("whiteLightChart").getContext("2d");
 
 // Crear una gráfica por cada variable
-const co2MhzChart   = createSingleLineChart(co2MhzCtx, "CO₂ MHZ19 (ppm)", co2mhzSeries, "ppm");
-const co2MqChart    = createSingleLineChart(co2MqCtx,  "CO₂ MQ135 (ppm)", co2mqSeries,  "ppm");
-const pm1Chart      = createSingleLineChart(pm1Ctx,    "PM1.0 (µg/m³)",   pm1Series,   "µg/m³");
-const pm25Chart     = createSingleLineChart(pm25Ctx,   "PM2.5 (µg/m³)",   pm25Series,  "µg/m³");
-const pm10Chart     = createSingleLineChart(pm10Ctx,   "PM10 (µg/m³)",    pm10Series,  "µg/m³");
-const tempChart     = createSingleLineChart(tempCtx,   "Temperatura (°C)", tempSeries, "°C");
-const luxChart      = createSingleLineChart(luxCtx,    "Lux",            luxSeries,   "lux");
-const whiteLightChart = createSingleLineChart(whiteCtx,"Luz Blanca",      whiteLightSeries, "valor");
+const co2MhzChart   = createSingleLineChart(co2MhzCtx, "CO₂ MHZ19 (ppm)", co2mhzSeries, "ppm", "#00e5ff"); // cyan
+const co2MqChart    = createSingleLineChart(co2MqCtx,  "CO₂ MQ135 (ppm)", co2mqSeries,  "ppm", "#7CFC00"); // lime
+const pm1Chart      = createSingleLineChart(pm1Ctx,    "PM1.0 (µg/m³)",   pm1Series,   "µg/m³", "#FFD700"); // yellow gold
+const pm25Chart     = createSingleLineChart(pm25Ctx,   "PM2.5 (µg/m³)",   pm25Series,  "µg/m³", "#FF8C00"); // orange
+const pm10Chart     = createSingleLineChart(pm10Ctx,   "PM10 (µg/m³)",    pm10Series,  "µg/m³", "#FF1493"); // fuchsia
+const tempChart     = createSingleLineChart(tempCtx,   "Temperatura (°C)", tempSeries, "°C", "#FF4444");     // red
+const luxChart      = createSingleLineChart(luxCtx,    "Lux",            luxSeries,   "lux", "#66B2FF");      // soft blue
+const whiteLightChart = createSingleLineChart(whiteCtx,"Luz Blanca",      whiteLightSeries, "valor", "#00FFCC"); // aqua
+
 
 // ---------------------------
 //  FUNCIÓN PARA AÑADIR PUNTO
